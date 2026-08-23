@@ -1,0 +1,436 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Manrope";
+  src: url("./assets/fonts/manrope-normal-variable.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  font-family:
+    "Manrope",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: var(--background);
+  color: var(--text-primary);
+}
+
+:root {
+  /* =========================
+     BACKGROUNDS
+     ========================= */
+
+  --background: #09090b;
+  --surface: #111114;
+  --surface-hover: #18181b;
+  --surface-elevated: #1c1c20;
+  --surface-active: #242428;
+
+
+  /* =========================
+     BORDERS
+     ========================= */
+
+  --border: #27272a;
+  --border-subtle: #1f1f23;
+  --border-hover: #3f3f46;
+
+
+  /* =========================
+     TEXT
+     ========================= */
+
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-disabled: #52525b;
+
+
+  /* =========================
+     ACCENT
+     ========================= */
+
+  --accent: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --accent-soft: rgba(139, 92, 246, 0.12);
+  --accent-border: rgba(139, 92, 246, 0.35);
+
+
+  /* =========================
+     FINANCIAL COLORS
+     ========================= */
+
+  --income: #22c55e;
+  --income-soft: rgba(34, 197, 94, 0.12);
+  --income-border: rgba(34, 197, 94, 0.30);
+
+  --expense: #ef4444;
+  --expense-soft: rgba(239, 68, 68, 0.12);
+  --expense-border: rgba(239, 68, 68, 0.30);
+
+  --warning: #f59e0b;
+  --warning-soft: rgba(245, 158, 11, 0.12);
+
+  --info: #3b82f6;
+  --info-soft: rgba(59, 130, 246, 0.12);
+
+
+  /* =========================
+     UI
+     ========================= */
+
+  --overlay: rgba(0, 0, 0, 0.65);
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+
+
+  /* =========================
+     SHADOWS
+     ========================= */
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+
+  --shadow-md:
+    0 4px 12px rgba(0, 0, 0, 0.25);
+
+  --shadow-lg:
+    0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================================================
+   ROLE THEMES
+   ========================================================= */
+
+.role-theme {
+    --role-accent: var(--accent);
+    --role-accent-soft: var(--accent-soft);
+    --role-accent-border: var(--border);
+    --role-avatar: var(--accent);
+    --role-glow: transparent;
+}
+
+/* USER */
+
+.role-user {
+    --role-accent: #8b5cf6;
+    --role-accent-soft: rgba(139, 92, 246, 0.10);
+    --role-accent-border: rgba(139, 92, 246, 0.25);
+    --role-avatar: linear-gradient(
+        135deg,
+        #8b5cf6,
+        #6d28d9
+    );
+    --role-glow: rgba(139, 92, 246, 0.20);
+}
+
+/* MODERATOR */
+
+.role-moderator {
+    --role-accent: #3b82f6;
+    --role-accent-soft: rgba(59, 130, 246, 0.10);
+    --role-accent-border: rgba(59, 130, 246, 0.25);
+    --role-avatar: linear-gradient(
+        135deg,
+        #3b82f6,
+        #1d4ed8
+    );
+    --role-glow: rgba(59, 130, 246, 0.20);
+}
+
+/* STAFF */
+
+.role-staff {
+    --role-accent: #10b981;
+    --role-accent-soft: rgba(16, 185, 129, 0.10);
+    --role-accent-border: rgba(16, 185, 129, 0.25);
+    --role-avatar: linear-gradient(
+        135deg,
+        #10b981,
+        #047857
+    );
+    --role-glow: rgba(16, 185, 129, 0.20);
+}
+
+/* ADMIN */
+
+.role-admin {
+    --role-accent: #f59e0b;
+    --role-accent-soft: rgba(245, 158, 11, 0.10);
+    --role-accent-border: rgba(245, 158, 11, 0.25);
+    --role-avatar: linear-gradient(
+        135deg,
+        #f59e0b,
+        #d97706
+    );
+    --role-glow: rgba(245, 158, 11, 0.20);
+}
+
+/* OWNER */
+
+.role-owner {
+    --role-accent: #f5c451;
+    --role-accent-soft: rgba(245, 196, 81, 0.12);
+    --role-accent-border: rgba(245, 196, 81, 0.35);
+    --role-avatar: linear-gradient(
+        135deg,
+        #f8d477,
+        #c58a18
+    );
+    --role-glow: rgba(245, 196, 81, 0.30);
+}
+
+
+/* =========================================================
+   ROLE BACKGROUND
+   ========================================================= */
+
+.role-profile-background {
+    position: relative;
+    overflow: hidden;
+}
+
+.role-profile-background::before {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+
+    width: 500px;
+    height: 500px;
+
+    top: -250px;
+    right: -180px;
+
+    border-radius: 9999px;
+
+    background: radial-gradient(
+        circle,
+        var(--role-glow),
+        transparent 70%
+    );
+
+    opacity: 0.45;
+}
+
+
+/* =========================================================
+   ROLE AVATAR
+   ========================================================= */
+
+.role-avatar {
+    background: var(--role-avatar);
+
+    box-shadow:
+        0 0 0 1px var(--role-accent-border),
+        0 12px 35px var(--role-glow);
+}
+
+
+/* =========================================================
+   ROLE BADGE
+   ========================================================= */
+
+.role-badge {
+    border-color: var(--role-accent-border);
+    background: var(--role-accent-soft);
+    color: var(--role-accent);
+}
+
+
+/* =========================================================
+   ROLE ACCENT
+   ========================================================= */
+
+.role-accent {
+    color: var(--role-accent);
+}
+
+.role-accent-background {
+    background: var(--role-accent);
+}
+
+
+/* =========================================================
+   ROLE CARD
+   ========================================================= */
+
+.role-card {
+    border-color: var(--role-accent-border);
+}
+
+.role-card:hover {
+    border-color: var(--role-accent-border);
+
+    box-shadow:
+        0 10px 40px -20px var(--role-glow);
+}
+
+
+/* =========================================================
+   SUBTLE ROLE ANIMATION
+   ========================================================= */
+
+.role-subtle {
+    animation: role-subtle-glow 4s ease-in-out infinite;
+}
+
+@keyframes role-subtle-glow {
+    0%,
+    100% {
+        box-shadow:
+            0 0 0 0 transparent;
+    }
+
+    50% {
+        box-shadow:
+            0 0 30px -15px var(--role-glow);
+    }
+}
+
+
+/* =========================================================
+   OWNER PREMIUM ANIMATION
+   ========================================================= */
+
+.role-premium {
+    animation: owner-glow 5s ease-in-out infinite;
+}
+
+@keyframes owner-glow {
+    0%,
+    100% {
+        box-shadow:
+            0 0 0 1px var(--role-accent-border),
+            0 0 25px -15px var(--role-glow);
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 1px var(--role-accent-border),
+            0 0 45px -10px var(--role-glow);
+    }
+}
+
+
+/* =========================================================
+   OWNER SHINE
+   ========================================================= */
+
+.role-owner .role-shine {
+    position: relative;
+    overflow: hidden;
+}
+
+.role-owner .role-shine::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 60%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.12),
+        transparent
+    );
+
+    transform: skewX(-20deg);
+
+    animation: owner-shine 6s ease-in-out infinite;
+}
+
+@keyframes owner-shine {
+    0%,
+    65% {
+        left: -100%;
+    }
+
+    85%,
+    100% {
+        left: 150%;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .role-subtle,
+    .role-premium,
+    .role-owner .role-shine::after {
+        animation: none;
+    }
+}
+
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #0b0b0b !important;
+    }
+
+    body * {
+        visibility: hidden !important;
+    }
+
+    [data-receipt],
+    [data-receipt] * {
+        visibility: visible !important;
+    }
+
+    [data-receipt] {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+
+        width: 210mm !important;
+        min-height: 297mm !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+
+        background: #0b0b0b !important;
+
+        overflow: visible !important;
+    }
+
+    [data-receipt] header,
+    [data-receipt] footer {
+        break-inside: avoid;
+    }
+
+    [data-receipt] section {
+        break-inside: avoid;
+    }
+
+    [data-receipt] * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}

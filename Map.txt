@@ -1,0 +1,80 @@
+I found the project checklist. Here's where we are based on everything we've built together over the last few weeks.
+
+✅ Phase 1 — Foundation
+Task	Status
+Project setup	✅
+Routing	✅
+Reusable UI components	✅
+Theme/layout	✅
+Folder structure	✅
+
+✅ Phase 2 — Wallets
+Task	Status
+Wallet CRUD	✅
+Validation	✅
+Confirmation modal	✅
+LocalStorage	✅
+Refactor	✅ (Context + custom hook)
+
+🟡 Phase 3 — Transactions
+Task	Status
+Model	✅
+CRUD	🟡 - Edit Transaction Delayed
+Wallet selector	✅
+Category selector	✅
+Income/Expense	✅
+Auto-update wallet balance	✅
+LocalStorage	✅
+Transaction CRUD breakdown
+Feature	Status
+Create	✅
+Read	✅
+Delete	✅
+=========================================================
+Edit UI	❌
+Edit logic	🚧
+This is the only major unfinished part right now.
+=========================================================
+
+⬜ Phase 4 — Dashboard
+Task	Status
+Totals	✅
+Income vs Expense	✅
+Recent transactions	✅
+Charts	✅
+
+⬜ Phase 6 — Search & Filters
+Task	Status
+Search	✅
+Filters	✅
+Sorting	✅
+
+⬜ Phase 5 — Categories - Delayed
+Task	Status
+CRUD	🟡
+Default categories	✅
+Icons/colors	🟡
+
+⬜ Phase 7 — UI Polish
+Task	Status
+Responsive	✅
+Animations	✅
+Empty states	✅
+Accessibility	
+Dark/Light themes polish	🟡
+
+⬜ Phase 8 — Firebase
+Task	Status
+Auth	✅
+Firestore	✅
+Security rules	✅
+Replace LocalStorage	✅
+
+⬜ Phase 9 — Advanced
+Task	Status
+Budgets	❌
+Recurring transactions	❌
+Transfers	❌
+Export	❌
+Arabic i18n	❌
+PWA	❌
