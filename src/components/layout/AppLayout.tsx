@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar";
 import { navigation } from "../../utils/navigation";
 import { useAuth } from "../../context/AuthContext";
 import PleaseSignInPage from "../constants/PleaseSignInPage";
-import Loading from "../loading";
+import Loading from "../Loading";
 
 const ROLE_STYLES = {
   user: {
