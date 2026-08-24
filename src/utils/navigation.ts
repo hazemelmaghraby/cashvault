@@ -3,7 +3,6 @@ import {
   Wallet,
   ArrowLeftRight,
   ChartColumn,
-  FileText,
   Tags,
   Settings,
 } from "lucide-react";
@@ -40,10 +39,5 @@ export const navigation = [
     label: "Reports",
     path: ROUTES.reports,
     icon: ChartColumn,
-  },
-  {
-    label: "Invoices",
-    path: ROUTES.invoices,
-    icon: FileText,
   },
 ];

@@ -4,11 +4,10 @@ import AppLayout from "../components/layout/AppLayout";
 
 import Dashboard from "../features/Dashboard/Dashboard";
 import Wallets from "../features/Wallets/Wallets";
-import Reports from "../features/Reports";
+import Reports from "../features/Reports/Reports";
 import Transactions from "../features/Transactions/Transactions";
 import Settings from "../features/Settings/Settings";
 import Categories from "../features/Categories/Categories";
-import Invoices from "../features/Invoices";
 import Profile from "../features/Profile/Profile";
 
 import RegisterPage from "../features/Auth/Register";
@@ -70,12 +69,6 @@ const router = createBrowserRouter([
         path: ROUTES.reports,
         element: <Reports />,
       },
-
-      {
-        path: ROUTES.invoices,
-        element: <Invoices />,
-      },
-
       {
         path: ROUTES.categories,
         element: <Categories />,
@@ -89,6 +82,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES.profile,
         element: <Profile />,
+      },
+      {
+        path: ROUTES.reports,
+        element: <Reports />,
       },
     ],
   },

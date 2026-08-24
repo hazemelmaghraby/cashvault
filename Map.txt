@@ -72,9 +72,17 @@ Replace LocalStorage	✅
 
 ⬜ Phase 9 — Advanced
 Task	Status
-Budgets	❌
-Recurring transactions	❌
-Transfers	❌
-Export	❌
+Transfers	✅
+Export	✅
+PWA	✅
+
+Phase 10 — Advanced #2
+Task	Status
+Reports:
+Daily Reports ✅
+Weekly Reports ✅
+Monthly Reports ✅
+
+Phase 11 -- Advanced #3
 Arabic i18n	❌
-PWA	❌
+Budgets	❌
