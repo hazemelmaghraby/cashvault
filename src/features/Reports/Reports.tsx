@@ -375,15 +375,84 @@ const Reports = () => {
     const handleExportPDF = async () => {
         if (!reportRef.current) return;
 
+        let exportContainer: HTMLDivElement | null = null;
+
         try {
             const reportElement = reportRef.current;
 
-            const canvas = await html2canvas(reportElement, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: "#ffffff",
-                logging: false,
+            // ============================================================
+            // CREATE A DESKTOP-SIZED EXPORT VERSION
+            // ============================================================
+
+            exportContainer = document.createElement("div");
+
+            exportContainer.style.position = "fixed";
+            exportContainer.style.left = "-100000px";
+            exportContainer.style.top = "0";
+            exportContainer.style.width = "1200px";
+            exportContainer.style.minWidth = "1200px";
+            exportContainer.style.maxWidth = "1200px";
+            exportContainer.style.backgroundColor = "#ffffff";
+            exportContainer.style.zIndex = "-9999";
+            exportContainer.style.pointerEvents = "none";
+
+            const clonedReport =
+                reportElement.cloneNode(true) as HTMLDivElement;
+
+            // Force the cloned report itself to desktop width
+            clonedReport.style.width = "1200px";
+            clonedReport.style.minWidth = "1200px";
+            clonedReport.style.maxWidth = "1200px";
+            clonedReport.style.margin = "0";
+            clonedReport.style.backgroundColor = "#ffffff";
+
+            exportContainer.appendChild(clonedReport);
+            document.body.appendChild(exportContainer);
+
+            // ============================================================
+            // WAIT FOR DESKTOP LAYOUT TO BE CALCULATED
+            // ============================================================
+
+            await new Promise<void>((resolve) => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        resolve();
+                    });
+                });
             });
+
+            // ============================================================
+            // CAPTURE DESKTOP VERSION
+            // ============================================================
+
+            const canvas = await html2canvas(
+                clonedReport,
+                {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: "#ffffff",
+                    logging: false,
+
+                    // IMPORTANT:
+                    // Pretend the browser viewport is desktop-sized.
+                    width: 1200,
+                    windowWidth: 1200,
+
+                    height: clonedReport.scrollHeight,
+                    windowHeight: clonedReport.scrollHeight,
+                }
+            );
+
+            // ============================================================
+            // REMOVE TEMPORARY REPORT
+            // ============================================================
+
+            exportContainer.remove();
+            exportContainer = null;
+
+            // ============================================================
+            // CREATE PDF
+            // ============================================================
 
             const pdf = new jsPDF({
                 orientation: "portrait",
@@ -396,15 +465,20 @@ const Reports = () => {
 
             const margin = 8;
 
-            const contentWidth = pageWidth - margin * 2;
-            const contentHeight = pageHeight - margin * 2;
+            const contentWidth =
+                pageWidth - margin * 2;
 
-            // Scale the canvas to the PDF width
-            const scale = contentWidth / canvas.width;
+            const contentHeight =
+                pageHeight - margin * 2;
 
-            const scaledWidth = canvas.width * scale;
+            // Scale desktop report to A4 width
+            const scale =
+                contentWidth / canvas.width;
 
-            // How many source pixels fit on one PDF page?
+            const scaledWidth =
+                canvas.width * scale;
+
+            // Source pixels that fit on one A4 page
             const sourcePageHeight =
                 contentHeight / scale;
 
@@ -412,6 +486,7 @@ const Reports = () => {
             let pageNumber = 0;
 
             while (sourceY < canvas.height) {
+
                 if (pageNumber > 0) {
                     pdf.addPage();
                 }
@@ -425,12 +500,18 @@ const Reports = () => {
                         remainingHeight
                     );
 
-                // Create a page-sized canvas slice
+                // ========================================================
+                // CREATE PAGE SLICE
+                // ========================================================
+
                 const pageCanvas =
                     document.createElement("canvas");
 
-                pageCanvas.width = canvas.width;
-                pageCanvas.height = currentSourceHeight;
+                pageCanvas.width =
+                    canvas.width;
+
+                pageCanvas.height =
+                    Math.ceil(currentSourceHeight);
 
                 const ctx =
                     pageCanvas.getContext("2d");
@@ -452,18 +533,28 @@ const Reports = () => {
 
                 ctx.drawImage(
                     canvas,
+
+                    // Source
                     0,
                     sourceY,
                     canvas.width,
                     currentSourceHeight,
+
+                    // Destination
                     0,
                     0,
                     canvas.width,
                     currentSourceHeight
                 );
 
+                // ========================================================
+                // ADD SLICE TO PDF
+                // ========================================================
+
                 const pageImage =
-                    pageCanvas.toDataURL("image/png");
+                    pageCanvas.toDataURL(
+                        "image/png"
+                    );
 
                 const pageImageHeight =
                     currentSourceHeight * scale;
@@ -481,6 +572,10 @@ const Reports = () => {
                 pageNumber++;
             }
 
+            // ============================================================
+            // SAVE
+            // ============================================================
+
             const date =
                 start.toISOString().split("T")[0];
 
@@ -489,6 +584,13 @@ const Reports = () => {
             );
 
         } catch (error) {
+
+            // Make absolutely sure the temporary
+            // desktop report is removed if anything fails.
+            if (exportContainer) {
+                exportContainer.remove();
+            }
+
             console.error(
                 "Failed to export report:",
                 error

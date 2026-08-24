@@ -226,6 +226,37 @@ const TransactionsPage = () => {
           + Add Transaction
         </Button>
 
+        <Button
+          onClick={() => navigate("/reports")}
+          className="
+            w-full
+            rounded-xl
+            bg-transparent
+            px-5
+            border
+            border-amber-50
+            hover:bg-black
+            py-2.5
+            text-sm
+            font-semibold
+            text-white
+            shadow-lg
+            shadow-[var(--accent)]/10
+            transition-all
+            duration-200
+            hover:bg-[var(--accent-hover)]
+            hover:shadow-[var(--accent)]/20
+            focus:outline-none
+            focus:ring-2
+            focus:ring-[var(--accent)]
+            focus:ring-offset-2
+            focus:ring-offset-[var(--background)]
+            sm:w-auto
+          "
+        >
+          Periodic Reports
+        </Button>
+
       </div>
 
       {/* Search & Sort */}

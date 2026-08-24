@@ -413,7 +413,7 @@ const AppLayout = () => {
         >
 
           {navigation
-            .slice(0, 6)
+            .slice(0, 5)
             .map((item) => {
 
               const Icon = item.icon;
