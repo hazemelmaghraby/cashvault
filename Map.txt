@@ -1,5 +1,3 @@
-I found the project checklist. Here's where we are based on everything we've built together over the last few weeks.
-
 ✅ Phase 1 — Foundation
 Task	Status
 Project setup	✅
@@ -82,6 +80,11 @@ Reports:
 Daily Reports ✅
 Weekly Reports ✅
 Monthly Reports ✅
+
+Issues - Bugs & Fixes
+register/login pages redirection when logged in ✅
+Delete/Reverse transaction function isn't working ❌
+loading state instead of showing user not logged in until the data fetches ✅
 
 Phase 11 -- Advanced #3
 Arabic i18n	❌

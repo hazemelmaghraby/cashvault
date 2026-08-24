@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useEffectEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
@@ -7,6 +7,12 @@ import { useAuth } from "../../context/AuthContext";
 const LoginPage = () => {
     const navigate = useNavigate();
     const { login, profile } = useAuth();
+    useEffect(() => {
+        // If profile exists, the user is logged in -> redirect to dashboard
+        if (profile) {
+            navigate('/dashboard', { replace: true });  // to prevent infinite loop when pressing back
+        }
+    }, [profile, navigate]); // Triggers immediately when profile loads or changes
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

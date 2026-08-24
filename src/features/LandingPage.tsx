@@ -3,16 +3,21 @@ import { useLayoutEffect, useRef } from "react";
 import { animatePageIn } from "../utils/animations";
 import Logo from '../assets/Logo.png'
 import { useAuth } from "../context/AuthContext";
+import Loading from "../components/loading";
 
 const LandingPage = () => {
     const pageRef = useRef<HTMLDivElement>(null);
-    const { user, profile, logout } = useAuth();
+    const { user, profile, logout, loading } = useAuth();
 
     useLayoutEffect(() => {
         if (!pageRef.current) return;
 
         animatePageIn(pageRef.current);
     }, []);
+
+    if (loading) {
+        return <Loading />
+    }
 
     return (
         <div

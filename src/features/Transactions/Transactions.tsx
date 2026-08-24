@@ -198,9 +198,10 @@ const TransactionsPage = () => {
           </p>
         </div>
 
-        <Button
-          onClick={() => setIsOpened(true)}
-          className="
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <Button
+            onClick={() => setIsOpened(true)}
+            className="
             w-full
             rounded-xl
             bg-[var(--accent)]
@@ -222,13 +223,13 @@ const TransactionsPage = () => {
             focus:ring-offset-[var(--background)]
             sm:w-auto
           "
-        >
-          + Add Transaction
-        </Button>
+          >
+            + Add Transaction
+          </Button>
 
-        <Button
-          onClick={() => navigate("/reports")}
-          className="
+          <Button
+            onClick={() => navigate("/reports")}
+            className="
             w-full
             rounded-xl
             bg-transparent
@@ -253,10 +254,10 @@ const TransactionsPage = () => {
             focus:ring-offset-[var(--background)]
             sm:w-auto
           "
-        >
-          Periodic Reports
-        </Button>
-
+          >
+            Periodic Reports
+          </Button>
+        </div>
       </div>
 
       {/* Search & Sort */}

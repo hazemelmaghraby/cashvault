@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import { navigation } from "../../utils/navigation";
 import { useAuth } from "../../context/AuthContext";
 import PleaseSignInPage from "../constants/PleaseSignInPage";
+import Loading from "../loading";
 
 const ROLE_STYLES = {
   user: {
@@ -79,7 +80,7 @@ const ROLE_STYLES = {
 const AppLayout = () => {
   const location = useLocation();
 
-  const { profile, user } = useAuth();
+  const { profile, user, loading } = useAuth();
 
   const currentPage =
     navigation.find(
@@ -102,7 +103,11 @@ const AppLayout = () => {
     `${firstName.charAt(0)}${lastName.charAt(0)}`
       .toUpperCase();
 
-  if (!user) {
+  if (loading) {
+    return <Loading />
+  }
+
+  if (!user && !loading) {
     return <PleaseSignInPage />;
   }
 
