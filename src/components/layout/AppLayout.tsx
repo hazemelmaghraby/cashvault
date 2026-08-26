@@ -4,6 +4,9 @@ import { navigation } from "../../utils/navigation";
 import { useAuth } from "../../context/AuthContext";
 import PleaseSignInPage from "../constants/PleaseSignInPage";
 import Loading from "../Loading";
+import { useState } from "react";
+import Button from "../ui/Button";
+import { signOut } from "firebase/auth";
 
 const ROLE_STYLES = {
   user: {
@@ -86,6 +89,8 @@ const AppLayout = () => {
     navigation.find(
       (item) => item.path === location.pathname
     )?.label ?? "Dashboard";
+  const [sidebarCollapsed, setSidebarCollapsed] =
+    useState(false);
 
   const role = profile?.role ?? "user";
 
@@ -151,7 +156,12 @@ const AppLayout = () => {
       <div className="relative z-10 flex min-h-screen">
 
         {/* Sidebar */}
-        <Sidebar />
+        <Sidebar
+          collapsed={sidebarCollapsed}
+          onToggle={() =>
+            setSidebarCollapsed((current) => !current)
+          }
+        />
 
         {/* Main area */}
         <div className="flex min-w-0 flex-1 flex-col">
@@ -217,14 +227,12 @@ const AppLayout = () => {
               {/* NOTIFICATIONS */}
               {/* ================================================= */}
 
-              <button
+              <Button
                 type="button"
                 aria-label="Notifications"
                 className="
                   relative
                   flex
-                  h-9
-                  w-9
                   items-center
                   justify-center
                   rounded-xl
@@ -245,13 +253,14 @@ const AppLayout = () => {
                   focus:ring-2
                   focus:ring-[var(--accent)]/20
                 "
+                onClick={() => { signOut }}
               >
 
                 <span className="text-sm">
-                  ●
+                  Sign Out
                 </span>
 
-              </button>
+              </Button>
 
               {/* ================================================= */}
               {/* PROFILE */}
