@@ -903,9 +903,9 @@ CashVault is actively being developed.
 ## Reports
 
 * [x] Reports section
-* [ ] Advanced reporting
+* [x] Advanced reporting
 * [ ] More detailed financial analytics
-* [ ] Export functionality
+* [x] Export functionality
 
 ---
 
@@ -925,21 +925,21 @@ Future development may include:
 
 ## Reports & Analytics
 
-* [ ] Daily reports
-* [ ] Weekly reports
-* [ ] Monthly reports
+* [x] Daily reports
+* [x] Weekly reports
+* [x] Monthly reports
 * [ ] Custom date ranges
-* [ ] Category spending analysis
+* [x] Category spending analysis
 * [ ] Wallet performance
 * [ ] Income trends
 * [ ] Expense trends
-* [ ] Financial statistics
+* [x] Financial statistics
 
 ## Exporting
 
 * [ ] CSV export
-* [ ] PDF reports
-* [ ] Transaction export
+* [x] PDF reports
+* [x] Transaction export
 * [ ] Financial statement generation
 
 ## Notifications
@@ -983,34 +983,6 @@ Improve Financial Decisions
 
 ---
 
-# 🛡️ Important Security Notes
-
-If you are deploying CashVault publicly:
-
-### Never commit secrets
-
-Do not commit:
-
-```text
-.env
-service-account.json
-private keys
-Firebase admin credentials
-```
-
-### Use Firestore Security Rules
-
-Frontend authentication does not replace Firestore authorization.
-
-### Validate financial operations
-
-Wallet balance changes and transfers should be validated carefully to prevent inconsistent financial data.
-
-### Treat transaction history as sensitive
-
-Financial information should be protected from unauthorized access.
-
----
 
 # 🐛 Known Development Considerations
 
@@ -1129,31 +1101,10 @@ cashvault/
 
 # 📸 Screenshots
 
-Screenshots can be added here as the project UI continues to evolve.
-
-Recommended screenshots:
-
-* Landing page
-* Dashboard
-* Wallet management
-* Transactions page
-* Transaction details modal
-* Reports
-* Mobile interface
-
-Example:
-
-```md
-## Dashboard
-
-![Dashboard Screenshot](./screenshots/dashboard.png)
-```
-
 ---
-
 # 👨‍💻 Author
 
-**Hazem Mohamed**
+**Hazem Muhammed El-Maghraby**
 
 Computer Science student and frontend developer.
 
@@ -1169,14 +1120,6 @@ CashVault is being developed as a practical fintech project focused on:
 
 ---
 
-# 📄 License
-
-This project currently does not specify an open-source license.
-
-If the repository is intended to be publicly reused or contributed to, a license such as MIT can be added.
-
----
-
 # ⭐ Support
 
 If you find the project interesting, consider giving the repository a ⭐ on GitHub.
@@ -1187,4 +1130,4 @@ Feedback, issues, and contributions are welcome.
 
 ## CashVault
 
-**Track it. Understand it. Own it.**
+**Secure. Organized. Yours.**
