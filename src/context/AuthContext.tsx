@@ -25,6 +25,7 @@ import {
 } from "firebase/firestore";
 import type { UserProfile } from "../features/Auth/types/userTypes";
 
+
 import { db } from "../firebase/firestore";
 
 import { auth } from "../firebase/auth";

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
@@ -6,7 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
-    const { register } = useAuth();
+    const { register, profile } = useAuth();
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -15,7 +15,14 @@ const RegisterPage = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [registerLoading, setRegisterLoading] = useState(false);
+
+    useEffect(() => {
+        // If profile exists, the user is logged in -> redirect to dashboard
+        if (profile) {
+            navigate('/dashboard', { replace: true });  // to prevent infinite loop when pressing back
+        }
+    }, [profile, navigate]); // Triggers immediately when profile loads or changes
 
     const getFirebaseError = (error: unknown) => {
         if (!(error instanceof Error)) {
@@ -64,7 +71,7 @@ const RegisterPage = () => {
         }
 
         try {
-            setLoading(true);
+            setRegisterLoading(true);
 
             await register(
                 firstName.trim(),
@@ -77,7 +84,7 @@ const RegisterPage = () => {
         } catch (error) {
             setError(getFirebaseError(error));
         } finally {
-            setLoading(false);
+            setRegisterLoading(false);
         }
     };
 
@@ -113,7 +120,7 @@ const RegisterPage = () => {
                             placeholder="Hazem"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
-                            disabled={loading}
+                            disabled={registerLoading}
                         />
 
                         <Input
@@ -122,7 +129,7 @@ const RegisterPage = () => {
                             placeholder="Mohamed"
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
-                            disabled={loading}
+                            disabled={registerLoading}
                         />
 
                     </div>
@@ -135,7 +142,7 @@ const RegisterPage = () => {
                             placeholder="you@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            disabled={loading}
+                            disabled={registerLoading}
                         />
 
                         <Input
@@ -145,7 +152,7 @@ const RegisterPage = () => {
                             placeholder="••••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            disabled={loading}
+                            disabled={registerLoading}
                         />
 
                         <Input
@@ -157,7 +164,7 @@ const RegisterPage = () => {
                             onChange={(e) =>
                                 setConfirmPassword(e.target.value)
                             }
-                            disabled={loading}
+                            disabled={registerLoading}
                         />
                     </div>
 
@@ -169,11 +176,11 @@ const RegisterPage = () => {
 
                     <Button
                         type="submit"
-                        Loading={loading}
-                        disabled={loading}
+                        Loading={registerLoading}
+                        disabled={registerLoading}
                         className="mt-6 w-full"
                     >
-                        {loading ? "Creating account..." : "Create account"}
+                        {registerLoading ? "Creating account..." : "Create account"}
                     </Button>
 
                     <p className="mt-6 text-center text-sm text-[var(--text-muted)]">

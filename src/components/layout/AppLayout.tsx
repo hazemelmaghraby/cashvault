@@ -6,7 +6,6 @@ import PleaseSignInPage from "../constants/PleaseSignInPage";
 import Loading from "../Loading";
 import { useState } from "react";
 import Button from "../ui/Button";
-import { signOut } from "firebase/auth";
 
 const ROLE_STYLES = {
   user: {
@@ -83,7 +82,7 @@ const ROLE_STYLES = {
 const AppLayout = () => {
   const location = useLocation();
 
-  const { profile, user, loading } = useAuth();
+  const { profile, user, loading, logout } = useAuth();
 
   const currentPage =
     navigation.find(
@@ -253,7 +252,7 @@ const AppLayout = () => {
                   focus:ring-2
                   focus:ring-[var(--accent)]/20
                 "
-                onClick={() => { signOut }}
+                onClick={logout}
               >
 
                 <span className="text-sm">
