@@ -1,7 +1,5 @@
-import Card from "../../../components/ui/Card";
 import type { Wallet } from "../types/walletTypes";
 import Button from "../../../components/ui/Button";
-import TransactionContext from "../../../context/TransactionContext";
 import { useTransaction } from "../../../hooks/useTransaction";
 import { useState } from "react";
 
@@ -10,7 +8,7 @@ type ClearBalancesProps = {
   onClose: () => void;
 };
 
-const ClearBalances = ({ wallets, onClose }: ClearBalancesProps) => {
+const ClearBalances = ({ onClose }: ClearBalancesProps) => {
     const {
 clearAllWalletsBalances,
     } = useTransaction();
