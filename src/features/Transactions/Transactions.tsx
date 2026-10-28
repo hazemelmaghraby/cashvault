@@ -14,6 +14,7 @@ import { useWallet } from "../../hooks/useWallet";
 import { useTransaction } from "../../hooks/useTransaction";
 import { useCategory } from "../../hooks/useCategories";
 import { useAuth } from "../../context/AuthContext";
+import ClearBalances from "../Wallets/components/ClearBalances";
 // import type { Option } from "../../components/ui/Select";
 import {
   animatePageIn,
@@ -58,6 +59,9 @@ const TransactionsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [sortBy, setSortBy] = useState("newest");
+  const [requestedPage, setCurrentPage] = useState(1);
+  const [walletsClearingModalOpen, setWalletsClearingModalOpen] = useState(false);
+  const pageSize = 10;
 
   const handleSaveTransaction = async (
     transaction: Transaction
@@ -84,6 +88,8 @@ const TransactionsPage = () => {
     removeTransaction(transaction.id);
   };
 
+  
+
   // Filteration
   const walletFilterOptions = [
     { value: "", label: "All Wallets" },
@@ -102,6 +108,10 @@ const TransactionsPage = () => {
     { value: "", label: "All Types" },
     ...TRANSACTION_TYPES,
   ];
+
+  const WalletClearModal = () => {
+    setWalletsClearingModalOpen(true);
+  }
 
   const filteredTransactions = transactions.filter((transaction) => {
     const matchesSearch =
@@ -164,11 +174,25 @@ const TransactionsPage = () => {
       }
     }
   );
+
+  const totalPages = Math.ceil(sortedTransactions.length / pageSize);
+  const currentPage = Math.min(requestedPage, Math.max(totalPages, 1));
+  const displayedTransactions = sortedTransactions.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+  const firstDisplayedTransaction =
+    sortedTransactions.length === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const lastDisplayedTransaction = Math.min(
+    currentPage * pageSize,
+    sortedTransactions.length
+  );
+
   useLayoutEffect(() => {
     if (!transactionListRef.current) return;
 
     animateListIn(transactionListRef.current);
-  }, [sortedTransactions.length]);
+  }, [currentPage, sortedTransactions.length]);
 
   if (!user) {
     return <PleaseSignInPage />;
@@ -258,6 +282,66 @@ const TransactionsPage = () => {
           >
             Periodic Reports
           </Button>
+          <Button
+            className="
+            w-full
+            rounded-xl
+            bg-transparent
+            px-5
+            border
+            border-amber-50
+            hover:bg-black
+            py-2.5
+            text-sm
+            font-semibold
+            text-white
+            shadow-lg
+            shadow-[var(--accent)]/10
+            transition-all
+            duration-200
+            hover:bg-[var(--accent-hover)]
+            hover:shadow-[var(--accent)]/20
+            focus:outline-none
+            focus:ring-2
+            focus:ring-[var(--accent)]
+            focus:ring-offset-2
+            focus:ring-offset-[var(--background)]
+            sm:w-auto
+          "
+          disabled
+          >
+            Clear All Transactions
+          </Button>
+          <Button
+          onClick={WalletClearModal}
+            className="
+            w-full
+            rounded-xl
+            bg-[var(--accent)]/90
+            px-5
+            border
+            border-gray-500
+            hover:bg-black
+            py-2.5
+            text-sm
+            font-semibold
+            text-white
+            shadow-lg
+            shadow-[var(--accent)]/10
+            transition-all
+            duration-200
+            hover:bg-[var(--accent-hover)]
+            hover:shadow-[var(--accent)]/20
+            focus:outline-none
+            focus:ring-2
+            focus:ring-[var(--accent)]
+            focus:ring-offset-2
+            focus:ring-offset-[var(--background)]
+            sm:w-auto
+          "
+          >
+            Clear All Wallets Balances
+          </Button>
         </div>
       </div>
 
@@ -280,14 +364,20 @@ const TransactionsPage = () => {
             label="Search"
             placeholder="Search transactions..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
           />
 
           <Select
             options={sortOptions}
             label="Sort By"
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
+            onChange={(e) => {
+              setSortBy(e.target.value);
+              setCurrentPage(1);
+            }}
           />
 
         </div>
@@ -313,21 +403,30 @@ const TransactionsPage = () => {
             options={walletFilterOptions}
             label="Wallet"
             value={selectedWallet}
-            onChange={(e) => setSelectedWallet(e.target.value)}
+            onChange={(e) => {
+              setSelectedWallet(e.target.value);
+              setCurrentPage(1);
+            }}
           />
 
           <Select
             options={categoryFilterOptions}
             label="Category"
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={(e) => {
+              setSelectedCategory(e.target.value);
+              setCurrentPage(1);
+            }}
           />
 
           <Select
             options={typeFilterOptions}
             label="Type"
             value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
+            onChange={(e) => {
+              setSelectedType(e.target.value);
+              setCurrentPage(1);
+            }}
           />
 
         </div>
@@ -345,6 +444,7 @@ const TransactionsPage = () => {
             </h2>
 
             <p className="mt-1 text-sm text-[var(--text-muted)]">
+              Showing {firstDisplayedTransaction}-{lastDisplayedTransaction} of{" "}
               {sortedTransactions.length}{" "}
               {sortedTransactions.length === 1
                 ? "transaction"
@@ -400,11 +500,12 @@ const TransactionsPage = () => {
         ) : (
 
           <div
+            ref={transactionListRef}
             data-animate-list
             className="space-y-3"
           >
 
-            {sortedTransactions.map((transaction) => {
+            {displayedTransactions.map((transaction) => {
               const wallet = wallets.find(
                 (wallet) => wallet.id === transaction.walletId
               );
@@ -444,6 +545,34 @@ const TransactionsPage = () => {
 
         )}
 
+        {totalPages > 1 && (
+          <div className="mt-6 flex items-center justify-between gap-4">
+            <Button
+              variant="outline"
+              size="small"
+              onClick={() => setCurrentPage((page) => page - 1)}
+              disabled={currentPage === 1}
+              aria-label="Go to previous page"
+            >
+              Previous
+            </Button>
+
+            <p className="text-sm text-[var(--text-muted)]" aria-live="polite">
+              Page {currentPage} of {totalPages}
+            </p>
+
+            <Button
+              variant="outline"
+              size="small"
+              onClick={() => setCurrentPage((page) => page + 1)}
+              disabled={currentPage === totalPages}
+              aria-label="Go to next page"
+            >
+              Next
+            </Button>
+          </div>
+        )}
+
         <Modal
           isOpen={isOpened}
           onClose={() => setIsOpened(false)}
@@ -454,6 +583,17 @@ const TransactionsPage = () => {
             onSubmit={handleSaveTransaction}
           />
         </Modal>
+
+        <Modal
+  isOpen={walletsClearingModalOpen}
+  onClose={() => setWalletsClearingModalOpen(false)}
+  title="Clear Balances"
+>
+  <ClearBalances
+    wallets={wallets}
+    onClose={() => setWalletsClearingModalOpen(false)}
+  />
+</Modal>
 
       </div>
 

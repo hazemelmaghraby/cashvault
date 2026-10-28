@@ -1,6 +1,7 @@
 import WalletCard from "./components/WalletCard";
 import Button from "../../components/ui/Button";
-import { useLayoutEffect, useRef, useState } from "react"; import Modal from "../../components/ui/Modal";
+import { useLayoutEffect, useRef, useState } from "react";
+import Modal from "../../components/ui/Modal";
 import WalletForm from "./components/WalletForm";
 import type { Wallet } from "./types/walletTypes";
 import { useWallet } from "../../hooks/useWallet";
@@ -8,6 +9,8 @@ import {
   animatePageIn,
   animateListIn,
 } from "../../utils/animations";
+import ClearBalances from "./components/ClearBalances";
+
 
 const WalletsPage = () => {
   const [isOpened, setIsOpened] = useState(false);
@@ -15,6 +18,7 @@ const WalletsPage = () => {
   const { wallets, addWallet, updateWallet, removeWallet, loading } = useWallet();
   const [selectedWallet, setSelectedWallet] = useState<Wallet | undefined>(undefined);
   const [walletToDelete, setWalletToDelete] = useState<Wallet | undefined>(undefined);
+  const [walletsClearingModalOpen, setWalletsClearingModalOpen] = useState(false);
 
   const pageRef = useRef<HTMLDivElement>(null);
   const walletListRef = useRef<HTMLDivElement>(null);
@@ -64,6 +68,10 @@ const WalletsPage = () => {
     setWalletToDelete(undefined);
   };
 
+  const handleClearBalances = () => {
+    setWalletsClearingModalOpen(true);
+  }
+
 
   return (
     <div ref={pageRef} className="space-y-8 pb-20 md:pb-0">
@@ -84,7 +92,7 @@ const WalletsPage = () => {
             Manage your accounts and keep track of your balances.
           </p>
         </div>
-
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Button
           onClick={handleAddWallet}
           className="
@@ -107,6 +115,30 @@ const WalletsPage = () => {
         >
           + Add Wallet
         </Button>
+
+                <Button
+          onClick={handleClearBalances}
+          className="
+          w-full
+          rounded-xl
+          bg-[var(--accent)]
+          px-5
+          py-2.5
+          text-sm
+          font-semibold
+          text-white
+          shadow-lg
+          shadow-[var(--accent)]/10
+          transition-all
+          duration-200
+          hover:bg-[var(--accent-hover)]
+          hover:shadow-[var(--accent)]/20
+          sm:w-auto
+        "
+        >
+          Clear All Balances
+        </Button>
+        </div>
 
       </div>
 
@@ -274,6 +306,17 @@ const WalletsPage = () => {
         </div>
 
       </Modal>
+
+              <Modal
+  isOpen={walletsClearingModalOpen}
+  onClose={() => setWalletsClearingModalOpen(false)}
+  title="Clear Balances"
+>
+  <ClearBalances
+    wallets={wallets}
+    onClose={() => setWalletsClearingModalOpen(false)}
+  />
+</Modal>
 
     </div>
   );

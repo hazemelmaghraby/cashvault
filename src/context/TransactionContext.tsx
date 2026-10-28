@@ -10,6 +10,8 @@ import {
     doc,
     onSnapshot,
     runTransaction as firestoreTransaction,
+    writeBatch,
+    getDocs,
 } from "firebase/firestore";
 
 import { db } from "../firebase/firestore";
@@ -36,6 +38,8 @@ type TransactionContextType = {
     removeTransaction: (
         id: string
     ) => Promise<void>;
+
+    clearAllWalletsBalances: () => Promise<void>;
 };
 
 export type TransactionProviderProps = {
@@ -1272,6 +1276,42 @@ export const TransactionProvider = ({
         );
     };
 
+                    /*
+                =================================================
+                Clear All Wallets Balances
+                =================================================
+                */
+               
+const clearAllWalletsBalances = async (): Promise<void> => {
+    if (!user) {
+        throw new Error("User is not authenticated");
+    }
+
+    const walletsRef = collection(
+        db,
+        "users",
+        user.uid,
+        "wallets"
+    );
+
+    const walletsSnapshot = await getDocs(walletsRef);
+
+    if (walletsSnapshot.empty) {
+        return;
+    }
+
+    const batch = writeBatch(db);
+
+    walletsSnapshot.forEach((walletDoc) => {
+        batch.update(walletDoc.ref, {
+            balance: 0,
+        });
+    });
+
+    await batch.commit();
+};
+
+
     return (
         <TransactionContext.Provider
             value={{
@@ -1281,6 +1321,7 @@ export const TransactionProvider = ({
                 transferMoney,
                 editTransaction,
                 removeTransaction,
+                clearAllWalletsBalances,
             }}
         >
             {children}
