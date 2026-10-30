@@ -15,6 +15,7 @@ import { useTransaction } from "../../hooks/useTransaction";
 import { useCategory } from "../../hooks/useCategories";
 import { useAuth } from "../../context/AuthContext";
 import ClearBalances from "../Wallets/components/ClearBalances";
+import ClearTransactionsModal from "./components/ClearTransactionsModal";
 // import type { Option } from "../../components/ui/Select";
 import {
   animatePageIn,
@@ -61,6 +62,7 @@ const TransactionsPage = () => {
   const [sortBy, setSortBy] = useState("newest");
   const [requestedPage, setCurrentPage] = useState(1);
   const [walletsClearingModalOpen, setWalletsClearingModalOpen] = useState(false);
+  const [transactionsClearingModalOpen, setTransactionsClearingModalOpen] = useState(false);
   const pageSize = 10;
 
   const handleSaveTransaction = async (
@@ -112,6 +114,10 @@ const TransactionsPage = () => {
   const WalletClearModal = () => {
     setWalletsClearingModalOpen(true);
   }
+
+  const openTransactionsClearModal = () => {
+    setTransactionsClearingModalOpen(true);
+  };
 
   const filteredTransactions = transactions.filter((transaction) => {
     const matchesSearch =
@@ -308,7 +314,7 @@ const TransactionsPage = () => {
             focus:ring-offset-[var(--background)]
             sm:w-auto
           "
-          disabled
+          onClick={openTransactionsClearModal}
           >
             Clear All Transactions
           </Button>
@@ -594,6 +600,16 @@ const TransactionsPage = () => {
     onClose={() => setWalletsClearingModalOpen(false)}
   />
 </Modal>
+
+        <Modal
+          isOpen={transactionsClearingModalOpen}
+          onClose={() => setTransactionsClearingModalOpen(false)}
+          title="Clear Transactions"
+        >
+          <ClearTransactionsModal
+            onClose={() => setTransactionsClearingModalOpen(false)}
+          />
+        </Modal>
 
       </div>
 

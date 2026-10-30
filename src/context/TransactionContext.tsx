@@ -40,6 +40,7 @@ type TransactionContextType = {
     ) => Promise<void>;
 
     clearAllWalletsBalances: () => Promise<void>;
+    clearTransactions: () => Promise<void>;
 };
 
 export type TransactionProviderProps = {
@@ -1281,7 +1282,7 @@ export const TransactionProvider = ({
                 Clear All Wallets Balances
                 =================================================
                 */
-               
+
 const clearAllWalletsBalances = async (): Promise<void> => {
     if (!user) {
         throw new Error("User is not authenticated");
@@ -1311,6 +1312,34 @@ const clearAllWalletsBalances = async (): Promise<void> => {
     await batch.commit();
 };
 
+const clearTransactions = async (): Promise<void> => {
+    if (!user) {
+        throw new Error("User is not authenticated");
+    }
+
+    const walletsRef = collection(
+        db,
+        "users",
+        user.uid,
+        "transactions"
+    );
+
+    const transactionSnapshot = await getDocs(walletsRef);
+
+    if (transactionSnapshot.empty) {
+        return;
+    }
+
+    const transactionDocs = transactionSnapshot.docs;
+    for (let index = 0; index < transactionDocs.length; index += 500) {
+        const batch = writeBatch(db);
+        transactionDocs.slice(index, index + 500).forEach((transactionDoc) => {
+            batch.delete(transactionDoc.ref);
+        });
+        await batch.commit();
+    }
+};
+
 
     return (
         <TransactionContext.Provider
@@ -1322,6 +1351,7 @@ const clearAllWalletsBalances = async (): Promise<void> => {
                 editTransaction,
                 removeTransaction,
                 clearAllWalletsBalances,
+                clearTransactions,
             }}
         >
             {children}
